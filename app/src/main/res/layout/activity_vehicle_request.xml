@@ -6,19 +6,19 @@
     android:layout_height="match_parent"
     tools:context="com.upool.android.upool.VehicleRequestActivity">
 
-    <TextView
-        android:id="@+id/textViewEmail"
-        android:layout_width="199dp"
-        android:layout_height="49dp"
-        android:text="TextView"
-        tools:layout_editor_absoluteX="79dp"
-        tools:layout_editor_absoluteY="77dp" />
+    <!--<TextView-->
+        <!--android:id="@+id/textViewEmail"-->
+        <!--android:layout_width="199dp"-->
+        <!--android:layout_height="49dp"-->
+        <!--android:text="TextView"-->
+        <!--tools:layout_editor_absoluteX="79dp"-->
+        <!--tools:layout_editor_absoluteY="77dp" />-->
 
-    <TextView
-        android:id="@+id/textViewPassword"
-        android:layout_width="199dp"
-        android:layout_height="49dp"
-        android:text="TextView"
-        tools:layout_editor_absoluteX="79dp"
-        tools:layout_editor_absoluteY="156dp" />
+    <!--<TextView-->
+        <!--android:id="@+id/textViewPassword"-->
+        <!--android:layout_width="199dp"-->
+        <!--android:layout_height="49dp"-->
+        <!--android:text="TextView"-->
+        <!--tools:layout_editor_absoluteX="79dp"-->
+        <!--tools:layout_editor_absoluteY="156dp" />-->
 </android.support.constraint.ConstraintLayout>
