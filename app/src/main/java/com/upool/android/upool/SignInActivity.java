@@ -12,11 +12,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class SignInActivity extends AppCompatActivity {
-    public static final String EXTRA_LOG_IN_EMAIL = "com.upool.android.upool.LOGINEMAIL";
-    public static final String EXTRA_LOG_IN_PASSWORD = "com.upool.android.upool.LOGINPASSWORD";
+//    public static final String EXTRA_LOG_IN_EMAIL = "com.upool.android.upool.LOGINEMAIL";
+//    public static final String EXTRA_LOG_IN_PASSWORD = "com.upool.android.upool.LOGINPASSWORD";
 
-    @BindView(R.id.editEmail) EditText emailText;
-    @BindView(R.id.editPassword) EditText passwordText;
+    @BindView(R.id.editEmail)
+    EditText emailText;
+    @BindView(R.id.editPassword)
+    EditText passwordText;
 
     private String email;
     private String password;
@@ -62,5 +64,7 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     public void SignUp(View view){
+        Intent signUpIntent = new Intent(this, SignUpActivity.class);
+        startActivity(signUpIntent);
     }
 }

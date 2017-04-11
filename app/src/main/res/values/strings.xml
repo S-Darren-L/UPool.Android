@@ -4,4 +4,16 @@
     <string name="password">Password</string>
     <string name="sign_up">Sign Up</string>
     <string name="sign_in">Sign In</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="title">Title</string>
+    <string name="register">Register</string>
+
+    <string-array name="title_array">
+        <item>Miss</item>
+        <item>Mr.</item>
+        <item>Mrs.</item>
+        <item>Ms.</item>
+        <item>Dr.</item>
+    </string-array>
 </resources>
