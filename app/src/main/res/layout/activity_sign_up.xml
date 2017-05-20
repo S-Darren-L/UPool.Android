@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.upool.android.upool.SignUpActivity">
+    tools:context="com.upool.android.upool.Activities.SignUpActivity">
 
     <ScrollView
         android:layout_width="0dp"
