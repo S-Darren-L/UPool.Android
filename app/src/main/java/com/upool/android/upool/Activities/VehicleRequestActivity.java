@@ -28,10 +28,12 @@ public class VehicleRequestActivity extends AppCompatActivity implements OnMapRe
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
     private static final String TAG = "TAG";
-    private static final int DEFAULT_ZOOM = 20;
+    private static final int DEFAULT_ZOOM = 16;
     //Request code for location permission request.
     //@see #onRequestPermissionsResult(int, String[], int[])
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    private static final String KEY_CAMERA_POSITION = "camera_position";
+    private static final String KEY_LOCATION = "location";
 
     //Flag indicating whether a requested permission has been denied after returning in
     //{@link #onRequestPermissionsResult(int, String[], int[])}.
@@ -51,6 +53,11 @@ public class VehicleRequestActivity extends AppCompatActivity implements OnMapRe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vehicle_request);
 //        ButterKnife.bind(this);
+
+        if (savedInstanceState != null) {
+            lastKnownLocation = savedInstanceState.getParcelable(KEY_LOCATION);
+            cameraPosition = savedInstanceState.getParcelable(KEY_CAMERA_POSITION);
+        }
 
         googleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this /* FragmentActivity */,
@@ -80,8 +87,6 @@ public class VehicleRequestActivity extends AppCompatActivity implements OnMapRe
         enableLocation();
         updateLocationUI();
         getDeviceLocation();
-
-//        showCurrentPlace();
     }
 
     /**
@@ -208,52 +213,12 @@ public class VehicleRequestActivity extends AppCompatActivity implements OnMapRe
         }
     }
 
-//    private void showCurrentPlace() {
-//        if (googleMap == null) {
-//            return;
-//        }
-//
-//        if (isLocationPermissionGranted) {
-//            // Get the likely places - that is, the businesses and other points of interest that
-//            // are the best match for the device's current location.
-//            @SuppressWarnings("MissingPermission")
-//            PendingResult<PlaceLikelihoodBuffer> result = Places.PlaceDetectionApi
-//                    .getCurrentPlace(googleApiClient, null);
-//            result.setResultCallback(new ResultCallback<PlaceLikelihoodBuffer>() {
-//                @Override
-//                public void onResult(@NonNull PlaceLikelihoodBuffer likelyPlaces) {
-//                    int i = 0;
-//                    mLikelyPlaceNames = new String[mMaxEntries];
-//                    mLikelyPlaceAddresses = new String[mMaxEntries];
-//                    mLikelyPlaceAttributions = new String[mMaxEntries];
-//                    mLikelyPlaceLatLngs = new LatLng[mMaxEntries];
-//                    for (PlaceLikelihood placeLikelihood : likelyPlaces) {
-//                        // Build a list of likely places to show the user. Max 5.
-//                        mLikelyPlaceNames[i] = (String) placeLikelihood.getPlace().getName();
-//                        mLikelyPlaceAddresses[i] = (String) placeLikelihood.getPlace().getAddress();
-//                        mLikelyPlaceAttributions[i] = (String) placeLikelihood.getPlace()
-//                                .getAttributions();
-//                        mLikelyPlaceLatLngs[i] = placeLikelihood.getPlace().getLatLng();
-//
-//                        i++;
-//                        if (i > (mMaxEntries - 1)) {
-//                            break;
-//                        }
-//                    }
-//                    // Release the place likelihood buffer, to avoid memory leaks.
-//                    likelyPlaces.release();
-//
-//                    // Show a dialog offering the user the list of likely places, and add a
-//                    // marker at the selected place.
-//                    openPlacesDialog();
-//                }
-//            });
-//        } else {
-//            // Add a default marker, because the user hasn't selected a place.
-//            mMap.addMarker(new MarkerOptions()
-//                    .title(getString(R.string.default_info_title))
-//                    .position(mDefaultLocation)
-//                    .snippet(getString(R.string.default_info_snippet)));
-//        }
-//    }
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        if (googleMap != null) {
+            outState.putParcelable(KEY_CAMERA_POSITION, googleMap.getCameraPosition());
+            outState.putParcelable(KEY_LOCATION, lastKnownLocation);
+            super.onSaveInstanceState(outState);
+        }
+    }
 }

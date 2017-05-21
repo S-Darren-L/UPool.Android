@@ -1,8 +1,11 @@
 package com.upool.android.upool.Activities;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -45,6 +48,14 @@ public class SignUpActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         titleSpinner.setOnItemSelectedListener(new CustomOnItemSelectedListener());
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event){
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.
+                INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        return true;
     }
 
     public void Register(View view){
