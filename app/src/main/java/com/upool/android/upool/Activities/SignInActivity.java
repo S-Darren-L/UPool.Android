@@ -61,6 +61,7 @@ public class SignInActivity extends AppCompatActivity {
         });
     }
 
+    //Dismiss keyboard when touch outside of EditText
     @Override
     public boolean onTouchEvent(MotionEvent event){
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.

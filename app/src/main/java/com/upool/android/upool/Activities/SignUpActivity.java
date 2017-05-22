@@ -3,6 +3,7 @@ package com.upool.android.upool.Activities;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -18,6 +19,8 @@ import butterknife.ButterKnife;
 
 public class SignUpActivity extends AppCompatActivity {
 
+    @BindView(R.id.sign_up_toolbar)
+    Toolbar signUpToolbar;
     @BindView(R.id.editTextEmail)
     EditText emailEditText;
     @BindView(R.id.textViewEmailError)
@@ -47,14 +50,26 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
         ButterKnife.bind(this);
 
+        setSupportActionBar(signUpToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         titleSpinner.setOnItemSelectedListener(new CustomOnItemSelectedListener());
     }
 
+    //Dismiss keyboard when touch outside of EditText
     @Override
     public boolean onTouchEvent(MotionEvent event){
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.
                 INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        return true;
+    }
+
+    //Add navigation back button on ToolBar
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
         return true;
     }
 
