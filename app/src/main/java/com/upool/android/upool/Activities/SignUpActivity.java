@@ -10,7 +10,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.upool.android.upool.R;
 
@@ -23,12 +22,12 @@ public class SignUpActivity extends AppCompatActivity {
     Toolbar signUpToolbar;
     @BindView(R.id.editTextEmail)
     EditText emailEditText;
-    @BindView(R.id.textViewEmailError)
-    TextView emailErrorTextView;
+//    @BindView(R.id.textViewEmailError)
+//    TextView emailErrorTextView;
     @BindView(R.id.editTextPassword)
     EditText passwordEditText;
-    @BindView(R.id.textViewPasswordError)
-    TextView passwordErrorTextView;
+//    @BindView(R.id.textViewPasswordError)
+//    TextView passwordErrorTextView;
     @BindView(R.id.spinnerTitle)
     Spinner titleSpinner;
     @BindView(R.id.editTextFirstName)
@@ -52,6 +51,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         setSupportActionBar(signUpToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         titleSpinner.setOnItemSelectedListener(new CustomOnItemSelectedListener());
