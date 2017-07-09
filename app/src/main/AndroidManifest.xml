@@ -3,7 +3,7 @@
     package="com.upool.android.upool">
 
     <uses-sdk
-        android:minSdkVersion="17"
+        android:minSdkVersion="21"
         android:targetSdkVersion="25" />
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
