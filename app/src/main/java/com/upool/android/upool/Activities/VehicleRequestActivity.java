@@ -1,14 +1,18 @@
 package com.upool.android.upool.Activities;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.ResultReceiver;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -22,12 +26,17 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.upool.android.upool.R;
+import com.upool.android.upool.Services.FetchAddressIntentService;
 import com.upool.android.upool.Utils.PermissionUtils;
+import com.upool.android.upool.Utils.ServiceConstants;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class VehicleRequestActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
-    private static final String TAG = "TAG";
+    private static final String TAG = "VehicleRequestActivity";
     private static final int DEFAULT_ZOOM = 16;
     //Request code for location permission request.
     //@see #onRequestPermissionsResult(int, String[], int[])
@@ -44,15 +53,25 @@ public class VehicleRequestActivity extends AppCompatActivity implements OnMapRe
     private GoogleApiClient googleApiClient;
     private CameraPosition cameraPosition;
     private Location lastKnownLocation;
+    private AddressResultReceiver addressResultReceiver;
 
     // defaultLocation is in Sydney, Australia
     private LatLng defaultLocation = new LatLng(-33.852, 151.211);
+
+    @BindView(R.id.vehicle_request_toolbar)
+    Toolbar vehicleRequestToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vehicle_request);
-//        ButterKnife.bind(this);
+        ButterKnife.bind(this);
+
+        // Set tool bar
+        setSupportActionBar(vehicleRequestToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         if (savedInstanceState != null) {
             lastKnownLocation = savedInstanceState.getParcelable(KEY_LOCATION);
@@ -70,6 +89,12 @@ public class VehicleRequestActivity extends AppCompatActivity implements OnMapRe
         googleApiClient.connect();
     }
 
+    //Add navigation back button on ToolBar
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 
     /**
      * Manipulates the map once available.
@@ -166,6 +191,17 @@ public class VehicleRequestActivity extends AppCompatActivity implements OnMapRe
 
     }
 
+    // Start fetch address(revers geolocation) service
+    private void startFetchAddressIntentService() {
+        if(addressResultReceiver == null){
+            addressResultReceiver = new AddressResultReceiver(new Handler());
+        }
+        Intent intent = new Intent(this, FetchAddressIntentService.class);
+        intent.putExtra(ServiceConstants.RECEIVER, addressResultReceiver);
+        intent.putExtra(ServiceConstants.LOCATION_DATA_EXTRA, lastKnownLocation);
+        startService(intent);
+    }
+
     private void getDeviceLocation() {
         if (isLocationPermissionGranted) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
@@ -187,6 +223,11 @@ public class VehicleRequestActivity extends AppCompatActivity implements OnMapRe
             Log.d(TAG, "Current location is null. Using defaults.");
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, DEFAULT_ZOOM));
             googleMap.getUiSettings().setMyLocationButtonEnabled(false);
+        }
+
+        // try get address
+        if(lastKnownLocation != null) {
+            startFetchAddressIntentService();
         }
     }
 
@@ -219,6 +260,18 @@ public class VehicleRequestActivity extends AppCompatActivity implements OnMapRe
             outState.putParcelable(KEY_CAMERA_POSITION, googleMap.getCameraPosition());
             outState.putParcelable(KEY_LOCATION, lastKnownLocation);
             super.onSaveInstanceState(outState);
+        }
+    }
+
+    class AddressResultReceiver extends ResultReceiver {
+        public AddressResultReceiver(Handler handler) {
+            super(handler);
+        }
+
+        @Override
+        protected void onReceiveResult(int resultCode, Bundle resultData) {
+            String addressResult = resultData.getString(ServiceConstants.RESULT_DATA_KEY);
+            Log.i(TAG, addressResult);
         }
     }
 }

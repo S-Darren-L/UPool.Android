@@ -15,6 +15,7 @@ import com.upool.android.upool.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -73,7 +74,8 @@ public class SignUpActivity extends AppCompatActivity {
         return true;
     }
 
-    public void Register(View view){
+    @OnClick(R.id.buttonRegister)
+    public void onRegisterClicked() {
 
     }
 

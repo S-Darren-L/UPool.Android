@@ -35,6 +35,10 @@
             android:name=".Activities.VehicleRequestActivity"
             android:label="@string/title_activity_vehicle_request"/>
 
+        <service
+            android:name=".Services.FetchAddressIntentService"
+            android:exported="false"/>
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
