@@ -34,30 +34,103 @@
     </android.support.v7.widget.Toolbar>
 
     <FrameLayout
+        android:id="@+id/mapFrameLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/vehicle_request_toolbar"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/vehicle_request_toolbar">
 
         <fragment
-            xmlns:map="http://schemas.android.com/apk/res-auto"
             android:id="@+id/vehicleRequestMap"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            map:cameraZoom="16"
-            map:mapType="normal"
-            map:uiCompass="true"
-            map:uiRotateGestures="true"
-            map:uiScrollGestures="true"
-            map:uiTiltGestures="true"
-            map:uiZoomControls="true"
-            map:uiZoomGestures="true"
-            tools:layout_editor_absoluteY="8dp"
-            tools:layout_editor_absoluteX="8dp" />
+            app:cameraZoom="16"
+            app:mapType="normal"
+            app:uiCompass="true"
+            app:uiRotateGestures="true"
+            app:uiScrollGestures="true"
+            app:uiTiltGestures="true"
+            app:uiZoomControls="true"
+            app:uiZoomGestures="true"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="8dp" />
 
     </FrameLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/addressFrameLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@+id/mapFrameLayout"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginEnd="80dp"
+        android:background="@drawable/rounded_layout">
+
+        <ImageView
+            android:id="@+id/departureIconImageView"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignTop="@+id/departureLocationEditText"
+            android:layout_alignBottom="@+id/departureLocationEditText"
+            android:layout_alignParentStart="true"
+            android:layout_margin="3dp"
+            app:srcCompat="@drawable/ic_my_location_black_48dp" />
+
+        <EditText
+            android:id="@+id/departureLocationEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/departureIconImageView"
+            android:layout_alignParentEnd="true"
+            android:ems="8"
+            android:hint="@string/departure_location"
+            android:inputType="textMultiLine" />
+
+        <ImageView
+            android:id="@+id/destinationIconImageView"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_below="@id/departureLocationEditText"
+            android:layout_alignTop="@+id/destinationLocationEditText"
+            android:layout_alignBottom="@+id/destinationLocationEditText"
+            android:layout_alignParentStart="true"
+            android:layout_margin="3dp"
+            app:srcCompat="@drawable/ic_location_on_black_48dp" />
+
+        <EditText
+            android:id="@+id/destinationLocationEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/departureLocationEditText"
+            android:layout_toEndOf="@+id/destinationIconImageView"
+            android:layout_alignParentEnd="true"
+            android:ems="8"
+            android:inputType="textMultiLine"
+            android:hint="@string/destination_location" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/autoCompleteDepartureAddressRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/destinationLocationEditText"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="10dp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/autoCompleteDestinationAddressRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/destinationLocationEditText"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="10dp" />
+    </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>

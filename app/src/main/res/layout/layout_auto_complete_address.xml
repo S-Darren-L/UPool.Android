@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/autoCompleteAddressImageView"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_margin="5dp"
+        android:layout_centerInParent="true"
+        android:layout_alignParentStart="true"
+        android:src="@drawable/ic_dot_black_48dp"/>
+
+    <TextView
+        android:id="@+id/autoCompleteAddressTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        android:layout_centerInParent="true"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@+id/autoCompleteAddressImageView"
+        android:textSize="18sp"/>
+
+</RelativeLayout>

@@ -9,6 +9,8 @@
     <string name="last_name">Last Name</string>
     <string name="title">Title</string>
     <string name="register">Register</string>
+    <string name="departure_location">Leave from</string>
+    <string name="destination_location">Destination</string>
 
     <string-array name="title_array">
         <item>Miss</item>
