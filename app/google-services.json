@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "211186423",
+    "firebase_url": "https://upool-app-backend.firebaseio.com",
+    "project_id": "upool-app-backend",
+    "storage_bucket": "upool-app-backend.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:211186423:android:6ac15cd638a50866",
+        "android_client_info": {
+          "package_name": "com.upool.android.upool"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "211186423-6v84b1el6sbm6s3is4vc1ku4cic654hc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.upool.android.upool",
+            "certificate_hash": "2ae793316d8e4efaf4048f1f6dbfce0e8a0b3894"
+          }
+        },
+        {
+          "client_id": "211186423-rd3uiunchs21acmrt9v52nuaiktcnfng.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXvGkPW3IoPRhnljaRLFPCLBuIYUbgynU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "211186423-rd3uiunchs21acmrt9v52nuaiktcnfng.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

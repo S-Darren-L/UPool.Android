@@ -56,6 +56,16 @@ dependencies {
     compile 'com.google.dagger:dagger:2.6'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.6'
 
+    // Firebase
+    compile 'com.google.firebase:firebase-core:11.0.2'
+    compile 'com.google.firebase:firebase-database:11.0.2'
+    compile 'com.google.firebase:firebase-storage:11.0.2'
+    compile 'com.google.firebase:firebase-crash:11.0.2'
+    compile 'com.google.firebase:firebase-auth:11.0.2'
+
     // Unit testing
     testCompile 'junit:junit:4.12'
 }
+
+// KEEP THIS AT THE BOTTOM
+apply plugin: 'com.google.gms.google-services'

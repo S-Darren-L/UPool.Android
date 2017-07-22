@@ -9,6 +9,17 @@
     android:focusableInTouchMode="true"
     tools:context="com.upool.android.upool.Activities.SignInActivity">
 
+    <ProgressBar
+        android:id="@+id/signInProgressBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:indeterminate="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
     <ImageView
         android:id="@+id/imageViewLogo"
         android:layout_width="150dp"
@@ -40,7 +51,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/buttonSignUp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="29dp"
         android:ems="10"
         android:hint="@string/password"
         android:inputType="textPassword"
@@ -49,7 +60,7 @@
     <Button
         android:id="@+id/buttonSignUp"
         android:layout_width="150dp"
-        android:layout_height="45dp"
+        android:layout_height="48dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/buttonSignIn"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -63,7 +74,7 @@
     <Button
         android:id="@+id/buttonSignIn"
         android:layout_width="150dp"
-        android:layout_height="45dp"
+        android:layout_height="48dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/buttonSignUp"
         app:layout_constraintBottom_toBottomOf="@+id/buttonSignUp"
