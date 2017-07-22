@@ -61,6 +61,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseUser user;
+    private FirebaseAuth.AuthStateListener authStateListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,15 +78,21 @@ public class SignUpActivity extends AppCompatActivity {
         title = titleSpinner.getItemAtPosition(0).toString();
 
         firebaseAuth = FirebaseAuth.getInstance();
-        user = firebaseAuth.getCurrentUser();
+        authStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                user = firebaseAuth.getCurrentUser();
+                if(user != null) {
+                    navigateToVehicleRequestActivity(user);
+                }
+            }
+        };
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        if(user != null) {
-            navigateToVehicleRequestActivity(user);
-        }
+        firebaseAuth.addAuthStateListener(authStateListener);
     }
 
     private void navigateToVehicleRequestActivity(FirebaseUser user) {

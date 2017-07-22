@@ -52,12 +52,12 @@ public class SignInActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         firebaseAuth = firebaseAuth.getInstance();
-        user = firebaseAuth.getCurrentUser();
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                user = firebaseAuth.getCurrentUser();
                 if(user != null) {
-
+                    navigateToVehicleRequestActivity(user);
                 }
             }
         };
@@ -66,9 +66,7 @@ public class SignInActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if(user != null) {
-            navigateToVehicleRequestActivity(user);
-        }
+        firebaseAuth.addAuthStateListener(authStateListener);
     }
 
     @OnTextChanged(R.id.editEmail)
