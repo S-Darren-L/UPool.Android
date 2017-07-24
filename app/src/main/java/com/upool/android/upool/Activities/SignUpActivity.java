@@ -96,8 +96,8 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void navigateToVehicleRequestActivity(FirebaseUser user) {
-        Intent signInIntent = new Intent(this, VehicleRequestActivity.class);
-        startActivity(signInIntent);
+        Intent vehicleRequestIntent = new Intent(this, VehicleRequestActivity.class);
+        startActivity(vehicleRequestIntent);
     }
 
     //Dismiss keyboard when touch outside of EditText

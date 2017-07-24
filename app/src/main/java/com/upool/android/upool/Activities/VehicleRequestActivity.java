@@ -12,6 +12,8 @@ import android.os.ResultReceiver;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -33,7 +35,9 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.auth.FirebaseAuth;
 import com.upool.android.upool.Adapters.AddressAutoCompleteAdapter;
+import com.upool.android.upool.Fragments.MenuFragment;
 import com.upool.android.upool.Models.AutoCompletePlace;
 import com.upool.android.upool.R;
 import com.upool.android.upool.Services.FetchAddressIntentService;
@@ -54,6 +58,9 @@ public class VehicleRequestActivity extends AppCompatActivity implements OnMapRe
     private static final int DEFAULT_ZOOM = 16;
     private static final String AUTO_COMPLETE_DEPARTURE_ADDRESS_STATE_TAG = "auto_complete_departure_address_state";
     private static final String AUTO_COMPLETE_DESTINATION_ADDRESS_STATE_TAG = "auto_complete_destination_address_state";
+
+    private FirebaseAuth firebaseAuth;
+    private FirebaseAuth.AuthStateListener authStateListener;
 
     //Request code for location permission request.
     //@see #onRequestPermissionsResult(int, String[], int[])
@@ -98,6 +105,8 @@ public class VehicleRequestActivity extends AppCompatActivity implements OnMapRe
     @BindView(R.id.autoCompleteDestinationAddressRecyclerView)
     RecyclerView autoCompleteDestinationAddressRV;
 
+    private MenuFragment menuFragment;
+
     private boolean isDepartureLocationFocused;
     private boolean isDestinationLocationFocused;
     private String departureLocation;
@@ -109,11 +118,32 @@ public class VehicleRequestActivity extends AppCompatActivity implements OnMapRe
         setContentView(R.layout.activity_vehicle_request);
         ButterKnife.bind(this);
 
+        // Set firebase
+        firebaseAuth = FirebaseAuth.getInstance();
+        authStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if(firebaseAuth.getCurrentUser() == null) {
+                    Intent logInIntent = new Intent(VehicleRequestActivity.this, SignInActivity.class);
+                    logInIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(logInIntent);
+                }
+            }
+        };
+
         // Set tool bar
         setSupportActionBar(vehicleRequestToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        // Set Menu
+        FragmentManager menuFragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = menuFragmentManager.beginTransaction();
+        menuFragment = new MenuFragment();
+        fragmentTransaction.add(R.id.menu, menuFragment);
+        fragmentTransaction.commit();
+
 
         if (savedInstanceState != null) {
             lastKnownLocation = savedInstanceState.getParcelable(KEY_LOCATION);
@@ -280,6 +310,9 @@ public class VehicleRequestActivity extends AppCompatActivity implements OnMapRe
     @Override
     protected void onStart() {
         super.onStart();
+
+        firebaseAuth.addAuthStateListener(authStateListener);
+
         if(googleApiClient != null)
             googleApiClient.connect();
     }

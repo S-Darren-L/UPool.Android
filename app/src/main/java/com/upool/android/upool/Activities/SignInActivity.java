@@ -18,6 +18,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.upool.android.upool.R;
 import com.upool.android.upool.Utils.CommonMethods;
 
@@ -43,6 +45,7 @@ public class SignInActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseUser user;
+    private DatabaseReference databaseReferenceUsers;
     private FirebaseAuth.AuthStateListener authStateListener;
 
     @Override
@@ -52,6 +55,9 @@ public class SignInActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         firebaseAuth = firebaseAuth.getInstance();
+        databaseReferenceUsers = FirebaseDatabase.getInstance().getReference().child(getString(R.string.db_user));
+        databaseReferenceUsers.keepSynced(true);
+
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -125,7 +131,7 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private void navigateToVehicleRequestActivity(FirebaseUser user) {
-        Intent signInIntent = new Intent(this, VehicleRequestActivity.class);
-        startActivity(signInIntent);
+        Intent vehicleRequestIntent = new Intent(this, VehicleRequestActivity.class);
+        startActivity(vehicleRequestIntent);
     }
 }
