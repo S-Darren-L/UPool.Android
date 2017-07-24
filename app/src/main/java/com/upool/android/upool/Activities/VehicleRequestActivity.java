@@ -133,9 +133,7 @@ public class VehicleRequestActivity extends AppCompatActivity implements OnMapRe
 
         // Set tool bar
         setSupportActionBar(vehicleRequestToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         // Set Menu
         FragmentManager menuFragmentManager = getSupportFragmentManager();
@@ -198,13 +196,6 @@ public class VehicleRequestActivity extends AppCompatActivity implements OnMapRe
     @Override
     public void onResume() {
         super.onResume();
-    }
-
-    //Add navigation back button on ToolBar
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
     }
 
     /**

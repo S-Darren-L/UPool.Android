@@ -36,5 +36,9 @@
     <string name="permission_required_toast">Location permission is required for this demo.</string>
 
     <!--    Database    -->
+    <string name="db_users">users</string>
     <string name="db_user">user</string>
+    <string name="db_user_title">userTitle</string>
+    <string name="db_user_first_name">userFirstName</string>
+    <string name="db_user_last_name">userLastName</string>
 </resources>

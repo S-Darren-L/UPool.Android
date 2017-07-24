@@ -21,6 +21,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.upool.android.upool.Models.User;
 import com.upool.android.upool.R;
 import com.upool.android.upool.Utils.CommonMethods;
 
@@ -51,17 +54,12 @@ public class SignUpActivity extends AppCompatActivity {
     @BindView(R.id.editTextLastName)
     EditText lastNameET;
 
-    private String email;
-//    private String emailError;
-    private String password;
-//    private String passwordError;
-    private String title;
-    private String firstName;
-    private String lastName;
+    private User user;
 
     private FirebaseAuth firebaseAuth;
-    private FirebaseUser user;
+    private FirebaseUser firebaseUser;
     private FirebaseAuth.AuthStateListener authStateListener;
+    private DatabaseReference userDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,21 +67,26 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
         ButterKnife.bind(this);
 
+        if(user == null)
+            user = new User();
+
         setSupportActionBar(signUpToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         titleSpinner.setOnItemSelectedListener(new CustomOnItemSelectedListener());
-        title = titleSpinner.getItemAtPosition(0).toString();
+        user.setTitle(titleSpinner.getItemAtPosition(0).toString());
 
         firebaseAuth = FirebaseAuth.getInstance();
+        userDatabase = FirebaseDatabase.getInstance().getReference().child(getString(R.string.db_users));
+
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                user = firebaseAuth.getCurrentUser();
-                if(user != null) {
-                    navigateToVehicleRequestActivity(user);
+                firebaseUser = firebaseAuth.getCurrentUser();
+                if(firebaseUser != null) {
+                    navigateToVehicleRequestActivity(firebaseUser);
                 }
             }
         };
@@ -97,6 +100,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void navigateToVehicleRequestActivity(FirebaseUser user) {
         Intent vehicleRequestIntent = new Intent(this, VehicleRequestActivity.class);
+        vehicleRequestIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(vehicleRequestIntent);
     }
 
@@ -118,29 +122,29 @@ public class SignUpActivity extends AppCompatActivity {
 
     @OnTextChanged(R.id.editTextEmail)
     public void onEmailTextChanged() {
-        email = emailET.getText().toString();
+        user.setEmail(emailET.getText().toString());
     }
 
     @OnTextChanged(R.id.editTextPassword)
     public void onPasswordTextChanged() {
-        password = passwordET.getText().toString();
+        user.setPassword(passwordET.getText().toString());
     }
 
     @OnTextChanged(R.id.editTextFirstName)
     public void onFirstNameTextChanged() {
-        firstName = firstNameET.getText().toString();
+        user.setFirstName(firstNameET.getText().toString());
     }
 
     @OnTextChanged(R.id.editTextLastName)
     public void onLastNameTextChanged() {
-        lastName = lastNameET.getText().toString();
+        user.setLastName(lastNameET.getText().toString());
     }
 
     @OnClick(R.id.buttonRegister)
     public void onRegisterClicked() {
-        if(CommonMethods.isStringValid(email) && CommonMethods.isStringValid(password) && CommonMethods.isStringValid(firstName) && CommonMethods.isStringValid(lastName)) {
+        if(CommonMethods.isStringValid(user.getEmail()) && CommonMethods.isStringValid(user.getPassword()) && CommonMethods.isStringValid(user.getFirstName()) && CommonMethods.isStringValid(user.getLastName())) {
             signUpProgressBar.setVisibility(View.VISIBLE);
-            signUpAccount(email, password);
+            signUpAccount(user.getEmail(), user.getPassword());
         }
     }
 
@@ -151,7 +155,11 @@ public class SignUpActivity extends AppCompatActivity {
                 signUpProgressBar.setVisibility(View.GONE);
                 if(task.isSuccessful()) {
                     Log.d(TAG, "createUserWithEmail:success");
-                    FirebaseUser user = firebaseAuth.getCurrentUser();
+                    user.setUserID(firebaseAuth.getCurrentUser().getUid());
+                    DatabaseReference currentUserDatabase = userDatabase.child(user.getUserID());
+                    currentUserDatabase.child(getString(R.string.db_user_title)).setValue(user.getTitle());
+                    currentUserDatabase.child(getString(R.string.last_name)).setValue(user.getLastName());
+                    currentUserDatabase.child(getString(R.string.first_name)).setValue(user.getFirstName());
                 } else {
                     Log.w(TAG, "createUserWithEmail:failure", task.getException());
                     Toast.makeText(SignUpActivity.this, "Authentication failed.",
@@ -165,7 +173,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-            title = adapterView.getItemAtPosition(position).toString();
+            user.setTitle(adapterView.getItemAtPosition(position).toString());
         }
 
         @Override
